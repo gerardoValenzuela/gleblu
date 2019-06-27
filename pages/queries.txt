@@ -1,0 +1,46 @@
+select a.first_name, a.last_name, b.salary from employees as a, salaries as b where a.emp_no = b.emp_no and (b.salary < 10000 or b.salary > 15000)
+
+select a.first_name, a.last_name, b.dept_no as 'departament ID' 
+from employees as a, dept_emp as b 
+where a.emp_no = b.emp_no and b.dept_no in ('30', '100') 
+order by a.first_name, a.last_name asc;
+
+select a.first_name, a.last_name, b.salary 
+from employees as a, salaries as b, dept_emp as c 
+where a.emp_no = b.emp_no and a.emp_no = c.emp_no and (b.salary < 10000 or b.salary > 15000) and c.dept_no in ('30', '100')
+
+select first_name, last_name, hire_date as 'hire date' 
+from employees 
+where YEAR(hire_date) = 1987
+
+select first_name, last_name from employees where LOCATE('b', first_name) > 0 and LOCATE('c', first_name) > 0
+
+
+select a.last_name, b.title, c.salary
+from employees as a, titles as b, salaries as c
+where a.emp_no = b.emp_no and a.emp_no = c.emp_no and b.title in ('Programmer', 'Shipping Clerk')
+and c.salary != 4500 and c.salary != 10000 and c.salary != 15000;
+
+select a.last_name, b.title, c.salary from employees as a, titles as b, salaries as c where a.emp_no = b.emp_no and a.emp_no = c.emp_no and (b.title = 'Programmer' or b.title = 'Shipping Clerk') and c.salary <> 4500 and c.salary <> 10000 and c.salary <> 15000
+
+select last_name 
+from employees 
+WHERE length(last_name) = 6;
+
+select last_name 
+from employees 
+WHERE substring(last_name, 3, 1 ) = 'e';
+
+select a.first_name, a.last_name, b.salary from employees as a, salaries as b where a.emp_no = b.emp_no and (b.salary < 10000 or b.salary > 15000)
+
+select distinct b.title 
+from employees as a, titles as b 
+where a.emp_no = b.emp_no;
+
+select a.first_name, a.last_name, b.salary, b.salary * 0.15 as PF 
+from employees as a, salaries as b 
+where a.emp_no = b.emp_no
+
+select * 
+from employees 
+where last_name in ('BLAKE','SCOTT','KING','FORD')
