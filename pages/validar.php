@@ -19,14 +19,14 @@
 		echo "\n" . $sql1 . "<br>";
     
 		$result1 = mysqli_query($mysqli, $sql1);
-		if($row = mysqli_fetch_array($result1)){
+		if($row1 = mysqli_fetch_array($result1)){
 			echo '<script>alert("BIENVENIDO INVITADO")</script> ';
-			header("Location: consulta.php");
+			header("Location: modificarCita.php?Id=".$row1['clave']);
     
 		}
 		else{
 			echo '<script>alert("ESTE USUARIO NO EXISTE, PORFAVOR REGISTRESE PARA PODER INGRESAR")</script> ';
-			echo "<script>location.href='index.php'</script>";	
+			//echo "<script>location.href='index.php'</script>";	
 		}
 	
 	

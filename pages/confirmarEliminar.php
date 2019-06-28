@@ -120,7 +120,7 @@ or die ("no se puede conectar con el servidor local".mysqli_error($conexion));
  $Id =$_GET['Id'];
  //$resultado = mysqli_query($conexion,"select FROM cita2 WHERE clave='$Id'");
  //$Id =$_GET['Id'];
-$resultado= mysqli_query($conexion,"SELECT * FROM cita2");
+$resultado= mysqli_query($conexion,"SELECT * FROM cita2 where clave = $Id");
 ?>
  <div class="row wrapper row3" style = "text-align:center;">
 	<center>
@@ -172,15 +172,21 @@ $resultado= mysqli_query($conexion,"SELECT * FROM cita2");
 				</tr>
 				<tr>
 					<td colspan = "2" style = "text-align: center">
-						<a href="confirmarEliminar.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Eliminar</a>
+            <a href="confirmarEliminar.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Eliminar</a>
+            <a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Cancelar</a>
 					</td>
-				</tr>
+        </tr>
 				<?php }else{ ?>
 				<tr>
 					<td colspan = "2">No se encontro ninguna cita con clave <?php echo $Id; ?>.</td>
-					<a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Regresar</a>
 						
 				</tr>
+        <tr>
+            <td colspan = "2" style = "text-align: center;">
+                <a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Regresar</a>
+            </td>
+                
+        </tr>
 				
 				<?php } ?>
 				

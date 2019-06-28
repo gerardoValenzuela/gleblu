@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+
+
+<!DOCTYPE html>
 <!--
 Template Name: Gleblu
 Author: <a href="https://www.os-templates.com/">OS Templates</a>
@@ -106,67 +108,116 @@ Licence URI: https://www.os-templates.com/template-terms
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
-<div class="row wrapper row3" style = "text-align:center;">
-
-	<h4>Administrador, para no saturar la página,valla despejando la bandeja de consultas.</h4>
-	<h2>****Consulta de Citas ****</h2>
-<?php
+<?php 
 $conexion= mysqli_connect("localhost","root","","octavio")
 or die ("no se puede conectar con el servidor local".mysqli_error($conexion));
 //$conexion= mysqli_connect("sql10.freesqldatabase.com:3306","sql10225315","xUkyHmlEbY","sql10225315")
 //or die ("no se puede conectar con el servidor ".mysqli_error($conexion));
-//$conexion= mysql_connect('localhost','root','')or die
-//("no se puede conectar con el servidor local");
-// mysql_select_db('octavio')or die
- //('no se puede conectar con la base de datos');
-?>
-	<center>
-			<table class = "table table-hover">
-				<thead>
-					<tr> 
-						<th> Clave </th>
-						<th> Nombre </th>
-						<th> Email </th>
-						<th> Telefono </th>
-						<th> Domicilio </th>
-						<th> Fecha </th>
-						<th> Edad</th>
-						<th> Hora cita </th>
-						<th> Sexo </th>
-						<th colspan = "2">Acciones</th>
-					</tr>
-				</thead>
-				<?php 
-				$result= mysqli_query($conexion,"SELECT * FROM cita2");
-				while($row=mysqli_fetch_array($result))
-				//$result= mysql_query("SELECT * FROM `cita2`");
-				//while($row=mysql_fetch_array($result))
-				{?>
-				<tbody>
-					<tr>
-						<td><?php echo $row["clave"];?> </td>
-						<td><?php echo $row["nombre"];?> </td>
-						<td><?php echo $row["email"];?> </td>
-						<td><?php echo $row["telefono"];?> </td>
-						<td><?php echo $row["ciudad"];?> </td>
-						<td><?php echo $row["fecha_cita"];?> </td>
-						<td><?php echo $row["edad"];?> </td>
-						<td><?php echo $row["hora_cita"];?> </td>
-						<td><?php echo $row["comentario"];?> </td>
-						<td> <a href="confirmarEliminar.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Eliminar</a></td>
-						<td> <a href="modificarCita.php?Id=<?php echo $row['clave'];?>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Modificar</a></td>
+//$conexion =  mysql_connect('localhost','root','')
+//or die ('No se puede Conectar con el Servidor');
+//mysql_select_db('octavio') or die('La base de datos no existe');
 
-					</tr>
-			<?php
-				}
-			?>	
-				</tbody>
-		</table>
-		<p> 
-    <a href="contacto.html" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Salir</a>
-    </p>
-  </center>
-  <br>
+ $Id =$_GET['Id'];
+ //$resultado = mysqli_query($conexion,"select FROM cita2 WHERE clave='$Id'");
+ //$Id =$_GET['Id'];
+$resultado= mysqli_query($conexion,"SELECT * FROM cita2 where clave = $Id");
+?>
+ <div class="row wrapper row3" style = "text-align:center;">
+    <form action = "modificar.php">
+    	<center>
+            <table class = "table">
+                <thead>
+                    <tr>
+                        <th colspan = "2">
+                            Confirmación de eliminación de cita. 
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if($row=mysqli_fetch_array($resultado)){ ?>
+                    <tr>
+                        <td>Clave:</td>
+                        <td>    
+                            <input type = "hidden" value = "<?php echo $row['clave'];?>" name = "clave">  
+                            <?php echo $row['clave']; ?>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Nombre:</td>
+                        <td>
+                            <input type = "text" value = "<?php echo $row['nombre']; ?>"  name = "nombre">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>E-Mail:</td>
+                        <td>
+                            <input type = "text" value = "<?php echo $row['email']; ?>"  name = "email">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Telefono:</td>
+                        <td>
+                            <input type = "text" value = "<?php echo $row['telefono']; ?>"  name = "telefono">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Domicilio:</td>
+                        <td>
+                            <input type = "text" value = "<?php echo $row['ciudad']; ?>"  name = "ciudad">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Edad:</td>
+                        <td>
+                            <input type = "text" value = "<?php echo $row['edad']; ?>"  name = "edad">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sexo:</td>
+                        <td>
+                            <select name = "sexo">
+                                <option value = "MASCULINO" <?php if($row['sexo'] == "MASCULINO") echo "selected"; ?> >MASCULINO</option>
+                                <option value = "FEMENINI" <?php if($row['sexo'] == "FEMENINO") echo "selected"; ?> >FEMENINO</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Fecha:</td>
+                        <td>
+                            <input type = "text" value = "<?php echo $row['fecha_cita']; ?>"  name = "fechaCita">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Hora</td>
+                        <td>
+                            <input type = "text" value = "<?php echo $row['hora_cita']; ?>"  name = "hora_cita">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan = "2" style = "text-align: center">
+                            <button type = "submit" class = "btn btn-primary">Modificar</button>
+                            <a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Cancelar</a>
+                        </td>
+                    </tr>
+                    <?php }else{ ?>
+                    <tr>
+                        <td colspan = "2" style = "text-align: center;">No se encontro ninguna cita con clave <?php echo $Id; ?>.</td>
+                    </tr>
+                    <tr>
+                        <td colspan = "2" style = "text-align: center;">
+                            <a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Regresar</a>
+                        </td>
+                            
+                    </tr>
+                    
+                    <?php } ?>
+                    
+                </tbody>
+            <table>
+            
+            <p></p>
+        </center>
+    </form>
 </div>
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
