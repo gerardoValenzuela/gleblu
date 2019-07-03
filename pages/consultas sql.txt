@@ -1,0 +1,128 @@
+SELECT 	r.origen as Origen, r.destino as Destino, 
+		c.horadeSalida as `Hora de Salida`, c.horadeLlegada  as `Hora de Llegada`, 
+		c.horadeSalidaRetorno  as `Hora de Salida de Retorno`, c.horadeRetorno  as `Hora de Retorno`
+        av.asientosVendidos as  `Asientos Vendidos`, aI.asientosIntermedios as `Asientos Intermedios`,
+        ch.nombre as `Nombre de Chofer`, 
+        ch.apellidoPaterno as `Apellido Paterno del Chofer`, ch.apellidoMaterno as `Apellido Materno del Chofer`,
+        bol.nombre as `Nombre del Boletero`, 
+        bol.apellidoPaterno as `Apellido Paterno del Boletero`, bol.apellidoMaterno as `Apellido Materno del Boletero`
+FROM 	corridas as c, rutas as r, 
+		(select idCorrida, count(*) as asientosVendidos group by idCorrida) as aV,
+        (select idCorrida, count(*) as asientosIntermedios group by idCorrida having tipoVoleto = 'intemedio') as aI,
+        trabajadores as ch,
+        trabajadores as bol
+WHERE 	c.idruta = r.id and c.id = b.idCorrida and c.id = aV.idCorrida and c.id = aI.idCorrida 
+		and c.curpChofer = ch.CURP and c.curpBoletero = bol.CURP;
+		
+
+SELECT aux.origen as Origen, aux.destino as Destino, count(*) as `Boletos Vendidos`
+FROM	(SELECT r.origen as origen, r.destino as destino, b.id,c.horadeSalida as horadeSalida
+    	FROM corridas as c, boletos as b, rutas as r
+    	WHERE c.idRuta = r.id and c.id = b.idCorrida) as aux
+GROUP BY aux.origen, aux.destino
+HAVING horadeSalida between '01/01/2019 0:00:00' and '31/01/2019 23:59:';
+
+SELECT 	aux.origen as Origen, idCorrida as `Id de Corrida`, 
+		aux.destino as Destino, sum(saldo) as `Ventas por Corrida`
+FROM (	SELECT 	c.id as idCorrida, r.origen as origen, r.destino as destino,  
+      			b.id,c.horadeSalida as horadeSalida, b.saldo as saldo
+		FROM corridas as c, boletos as b, rutas as r
+		WHERE c.idRuta = r.id and c.id = b.idCorrida) as aux
+GROUP BY aux.origen, aux.destino, aux.idCorrida;
+
+SELECT 	aux.origen as Origen,  
+		aux.destino as Destino, sum(saldo) as `Ventas por Ruta`
+FROM (	SELECT 	c.id as idCorrida, r.origen as origen, r.destino as destino,  
+      			b.id,c.horadeSalida as horadeSalida, b.saldo as saldo
+		FROM corridas as c, boletos as b, rutas as r
+		WHERE c.idRuta = r.id and c.id = b.idCorrida) as aux
+GROUP BY aux.origen, aux.destino;
+		
+SELECT 	aux.origen as Origen,  
+		aux.destino as Destino, sum(saldo) as `Ventas por Ruta y Pasajes Intermedios`
+FROM (	SELECT 	c.id as idCorrida, r.origen as origen, r.destino as destino,  
+      			b.id,c.horadeSalida as horadeSalida, b.saldo as saldo
+		FROM corridas as c, boletos as b, rutas as r
+		WHERE c.idRuta = r.id and c.id = b.idCorrida and b.tipoVoleto = 'INTERMEDIO') as aux
+GROUP BY aux.origen, aux.destino;
+		
+SELECT 	aux.origen as Origen,  
+		aux.destino as Destino, sum(saldo) as `Ventas por Ruta y Boletos de Taquilla`
+FROM (	SELECT 	c.id as idCorrida, r.origen as origen, r.destino as destino,  
+      			b.id,c.horadeSalida as horadeSalida, b.saldo as saldo
+		FROM corridas as c, boletos as b, rutas as r
+		WHERE c.idRuta = r.id and c.id = b.idCorrida and b.tipoVoleto <> 'INTERMEDIO') as aux
+GROUP BY aux.origen, aux.destino;
+
+SELECT aux.origen as Origen, aus.destino as Destino, idCorrida as `Id de Corrida`, 
+	Min(`Ventas por Corrida`) as `Ventas de la Corrida Menos Productiva`
+FROM (SELECT 	aux.origen as Origen, idCorrida as `Id de Corrida`, 
+			aux.destino as Destino, sum(saldo) as `Ventas por Corrida`
+	FROM (	SELECT 	c.id as idCorrida, r.origen as origen, r.destino as destino,  
+					b.id,c.horadeSalida as horadeSalida, b.saldo as saldo
+			FROM corridas as c, boletos as b, rutas as r
+			WHERE c.idRuta = r.id and c.id = b.idCorrida) as aux
+	GROUP BY aux.origen, aux.destino, aux.idCorrida) as aux1
+GROUP BY aux.Origen, aux.Destino, aux.`Id de Corrida`;
+
+SELECT aux.origen as Origen, aus.destino as Destino, idCorrida as `Id de Corrida`, 
+	Max(`Ventas por Corrida`) as `Ventas de la Corrida Mas Productiva`
+FROM (SELECT 	aux.origen as Origen, idCorrida as `Id de Corrida`, 
+			aux.destino as Destino, sum(saldo) as `Ventas por Corrida`
+	FROM (	SELECT 	c.id as idCorrida, r.origen as origen, r.destino as destino,  
+					b.id,c.horadeSalida as horadeSalida, b.saldo as saldo
+			FROM corridas as c, boletos as b, rutas as r
+			WHERE c.idRuta = r.id and c.id = b.idCorrida) as aux
+	GROUP BY aux.origen, aux.destino, aux.idCorrida) as aux1
+GROUP BY aux.Origen, aux.Destino, aux.`Id de Corrida`;
+
+SELECT aux.origen as Origen, aus.destino as Destino, 
+	Min(`Ventas por Corrida`) as `Ventas de la Ruta Menos Productiva`
+FROM (SELECT 	aux.origen as Origen, idCorrida as `Id de Corrida`, 
+			aux.destino as Destino, sum(saldo) as `Ventas por Corrida`
+	FROM (	SELECT 	c.id as idCorrida, r.origen as origen, r.destino as destino,  
+					b.id,c.horadeSalida as horadeSalida, b.saldo as saldo
+			FROM corridas as c, boletos as b, rutas as r
+			WHERE c.idRuta = r.id and c.id = b.idCorrida) as aux
+	GROUP BY aux.origen, aux.destino, aux.idCorrida) as aux1
+GROUP BY aux.Origen, aux.Destino;
+
+SELECT aux.origen as Origen, aus.destino as Destino,
+	Max(`Ventas por Corrida`) as `Ventas de la Ruta Mas Productiva`
+FROM (SELECT 	aux.origen as Origen, idCorrida as `Id de Corrida`, 
+			aux.destino as Destino, sum(saldo) as `Ventas por Corrida`
+	FROM (	SELECT 	c.id as idCorrida, r.origen as origen, r.destino as destino,  
+					b.id,c.horadeSalida as horadeSalida, b.saldo as saldo
+			FROM corridas as c, boletos as b, rutas as r
+			WHERE c.idRuta = r.id and c.id = b.idCorrida) as aux
+	GROUP BY aux.origen, aux.destino, aux.idCorrida) as aux1
+GROUP BY aux.Origen, aux.Destino;
+
+SELECT 	aux.CURP as CURP, aux.nombreBoletero as `Nombre del Boletero`,
+		aux.apellidoPaternodelBoletero as `Apellido Paterno del Boletero`,
+        aux.apellidoMaternodelBoletero as `Apellido Materno del Boletero`,
+        sum(saldo) as Ventas
+FROM   (SELECT  t.CURP as CURP, t.nombre as nombreBoletero,
+                t.apellidoPaterno as apellidoPaternoBoletero,
+                t.apellidoMaterno as apellidoMaternoBoletero,
+                b.saldo as saldo, b.fecha
+        FROM boletos as b, trabajadores as t
+        WHERE b.curpBoletero = t.CURP) as aux
+GROUP BY aux.CURP, aux.nombreBoletero, aux.apellidoPaternodelBoletero, aux.apellidoMaternodelBoletero
+HAVING aux.fecha between '01/01/2019 0:00:00' and '31/01/2019 23:59:';
+
+SELECT 	aux.CURP as CURP, aux.nombreChofer as `Nombre del Chofer`,
+		aux.apellidoPaternodelChofer as `Apellido Paterno del Chofer`,
+        aux.apellidoMaternodelChofer as `Apellido Materno del Chofer`,
+		aux.Origen as Origen, aux.Destino as Destino
+        count(aux.idCorrida) as numerodeCorridas
+FROM   (SELECT  c.id as idCorrida, r.origen as Origen, r.destino as Destino, t.CURP as CURP, t.nombre as nombreChofer,
+                t.apellidoPaterno as apellidoPaternoChofer,
+                t.apellidoMaterno as apellidoMaternoChofer,
+                c.horadeSalida
+        FROM corridas as c, trabajadores as t, rutas as r
+        WHERE c.curpChofer = t.CURP and c.idRuta = r.id) as aux
+GROUP BY aux.CURP, aux.nombreChofer, aux.apellidoPaternodelChofer, aux.apellidoMaternodelChofer, aux.Origen, aux.Destino
+HAVING horadeSalida between '01/01/2019 0:00:00' and '31/01/2019 23:59:';
+
+

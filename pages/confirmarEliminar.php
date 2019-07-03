@@ -16,6 +16,12 @@ Licence URI: https://www.os-templates.com/template-terms
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="../layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+<script language = "javascript">
+    function regresar(){
+        history.back();
+    }
+</script>
+
 </head>
 <body id="top">
 <!-- ################################################################################################ -->
@@ -124,75 +130,76 @@ $resultado= mysqli_query($conexion,"SELECT * FROM cita2 where clave = $Id");
 ?>
  <div class="row wrapper row3" style = "text-align:center;">
 	<center>
-		<table class = "table">
-			<thead>
-				<tr>
-					<th colspan = "2">
-						Confirmación de eliminación de cita. 
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php if($row=mysqli_fetch_array($resultado)){ ?>
-				<tr>
-					<td>Clave:</td>
-					<td><?php echo $row["clave"]; ?></td>
-				</tr>
-				<tr>
-					<td>Nombre:</td>
-					<td><?php echo $row["nombre"]; ?></td>
-				</tr>
-				<tr>
-					<td>E-Mail:</td>
-					<td><?php echo $row["email"]; ?></td>
-				</tr>
-				<tr>
-					<td>Telefono:</td>
-					<td><?php echo $row["telefono"] ?></td>
-				</tr>
-				<tr>
-					<td>Domicilio:</td>
-					<td><?php echo $row["ciudad"] ?></td>
-				</tr>
-				<tr>
-					<td>Edad:</td>
-					<td><?php echo $row["edad"] ?></td>
-				</tr>
-				<tr>
-					<td>Sexo:</td>
-					<td><?php echo $row["sexo"] ?></td>
-				</tr>
-				<tr>
-					<td>Fecha:</td>
-					<td><?php echo $row["fecha_cita"] ?></td>
-				</tr>
-				<tr>
-					<td>Hora</td>
-					<td><?php echo $row["hora_cita"] ?></td>
-				</tr>
-				<tr>
-					<td colspan = "2" style = "text-align: center">
-            <a href="confirmarEliminar.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Eliminar</a>
-            <a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Cancelar</a>
-					</td>
-        </tr>
-				<?php }else{ ?>
-				<tr>
-					<td colspan = "2">No se encontro ninguna cita con clave <?php echo $Id; ?>.</td>
-						
-				</tr>
-        <tr>
-            <td colspan = "2" style = "text-align: center;">
-                <a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Regresar</a>
+    <form action = "eliminarCita.php" method = "post">
+      <table class = "table">
+        <thead>
+          <tr>
+            <th colspan = "2">
+              Confirmación de eliminación de cita. 
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if($row=mysqli_fetch_array($resultado)){ ?>
+          <tr>
+            <td>Clave:</td>
+            <td><?php echo $row["clave"]; ?><input type = "hidden" name = "Id" id = "Id" value = "<?php echo $row["clave"]; ?>"></td>
+          </tr>
+          <tr>
+            <td>Nombre:</td>
+            <td><?php echo $row["nombre"]; ?></td>
+          </tr>
+          <tr>
+            <td>E-Mail:</td>
+            <td><?php echo $row["email"]; ?></td>
+          </tr>
+          <tr>
+            <td>Telefono:</td>
+            <td><?php echo $row["telefono"] ?></td>
+          </tr>
+          <tr>
+            <td>Domicilio:</td>
+            <td><?php echo $row["ciudad"] ?></td>
+          </tr>
+          <tr>
+            <td>Edad:</td>
+            <td><?php echo $row["edad"] ?></td>
+          </tr>
+          <tr>
+            <td>Sexo:</td>
+            <td><?php echo $row["sexo"] ?></td>
+          </tr>
+          <tr>
+            <td>Fecha:</td>
+            <td><?php echo $row["fecha_cita"] ?></td>
+          </tr>
+          <tr>
+            <td>Hora</td>
+            <td><?php echo $row["hora_cita"] ?></td>
+          </tr>
+          <tr>
+            <td colspan = "2" style = "text-align: center">
+              <button type="submit" class="btn btn-primary btn-lg active" style = "background-color:#ff0000;font-size:large;">Eliminar</button>
+              <button type = "button" class = "btn btn-primary" style = "font-size:medium; background-color:#0000ff;" onclick = "regresar()" >Cancelar</button>
             </td>
-                
-        </tr>
-				
-				<?php } ?>
-				
-			</tbody>
-		<table>
-		
+          </tr>
+          <?php }else{ ?>
+          <tr>
+            <td colspan = "2">No se encontro ninguna cita con clave <?php echo $Id; ?>.</td>
+              
+          </tr>
+          <tr>
+              <td colspan = "2" style = "text-align: center;">
+                  <a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Regresar</a>
+              </td>
+                  
+          </tr>
+          
+          <?php } ?>
+          
+        </tbody>
+      <table>
+    </form>
 	   <p></p>
 		
 	</center>
