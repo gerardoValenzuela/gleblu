@@ -154,7 +154,7 @@ or die ("no se puede conectar con el servidor local".mysqli_error($conexion));
 						<td><?php echo $row["hora_cita"];?> </td>
 						<td><?php echo $row["comentario"];?> </td>
 						<td> <a href="confirmarEliminar.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Eliminar</a></td>
-						<td> <a href="modificarCita.php?Id=<?php echo $row['clave'];?>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Modificar</a></td>
+						<td> <a href="modificarCitaAdministracion.php?Id=<?php echo $row['clave'];?>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Modificar</a></td>
 
 					</tr>
 			<?php

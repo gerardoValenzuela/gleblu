@@ -19,9 +19,8 @@ Licence URI: https://www.os-templates.com/template-terms
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
 
 <script language = "javascript">
-    function regresar(url){
-        alert("url: " + url);
-        window.location = url;
+    function regresar(){
+        history.back();
     }
 </script>
 </head>
@@ -131,7 +130,7 @@ or die ("no se puede conectar con el servidor local".mysqli_error($conexion));
 $resultado= mysqli_query($conexion,"SELECT * FROM cita2 where clave = $Id");
 ?>
  <div class="row wrapper row3" style = "text-align:center;">
-    <form action = "modificaciondeCita.php" method = "post">
+    <form action = "modificaciondeCitaAdministracion.php" method = "post">
     	<center>
             <table class = "table">
                 <thead>
@@ -153,37 +152,40 @@ $resultado= mysqli_query($conexion,"SELECT * FROM cita2 where clave = $Id");
                     <tr>
                         <td>Nombre:</td>
                         <td>
-                            <?php echo $row['nombre']; ?>
+                            <input type = "text" name = "nombre" id = "nombre" value = "<?php echo $row["nombre"]; ?>"> 
                         </td>
                     </tr>
                     <tr>
                         <td>E-Mail:</td>
                         <td>
-                            <?php echo $row['email']; ?>
+                            <input type = "text" name = "email" id = "email" value = "<?php echo $row["email"]; ?>"> 
                         </td>
                     </tr>
                     <tr>
                         <td>Telefono:</td>
                         <td>
-                            <?php echo $row['telefono']; ?>
+                            <input type = "text" name = "telefono" id = "telefono" value = "<?php echo $row["telefono"]; ?>"> 
                         </td>
                     </tr>
                     <tr>
                         <td>Domicilio:</td>
                         <td>
-                            <?php echo $row['ciudad']; ?>
+                            <input type = "text" name = "ciudad" id = "ciudad" value = "<?php echo $row["ciudad"]; ?>"> 
                         </td>
                     </tr>
                     <tr>
                         <td>Edad:</td>
                         <td>
-                            <?php echo $row['edad']; ?>
+                            <input type = "text" name = "edad" id = "edad" value = "<?php echo $row["edad"]; ?>"> 
                         </td>
                     </tr>
                     <tr>
                         <td>Sexo:</td>
                         <td>
-                            <?php echo $row['sexo']; ?>
+                            <select id = "sexo" name = "sexo">
+                                <option value = "MASCULINO" <?php if(strcmp($row["sexo"], "MASCULINO") == 0) echo "selected"; ?> >MASCULINO</option>
+                                <option value = "FEMENINO" <?php if(strcmp($row["sexo"], "FEMENINO") == 0) echo "selected"; ?> >FEMENINO</option>
+                            <select>
                         </td>
                     </tr>
                     <tr>
@@ -220,7 +222,7 @@ $resultado= mysqli_query($conexion,"SELECT * FROM cita2 where clave = $Id");
                     <tr>
                         <td colspan = "2" style = "text-align: center">
                             <button type = "submit" class = "btn btn-primary" style = "font-size:medium; background-color:#ff0000;">Modificar</button>
-                            <button type = "button" class = "btn btn-primary" style = "font-size:medium; background-color:#0000ff;" onclick = "regresar('/gleblu')" >Cancelar</button>
+                            <button type = "button" class = "btn btn-primary" style = "font-size:medium; background-color:#0000ff;" onclick = "regresar()" >Cancelar</button>
                         </td>
                     </tr>
                     <?php }else{ ?>
@@ -229,7 +231,7 @@ $resultado= mysqli_query($conexion,"SELECT * FROM cita2 where clave = $Id");
                     </tr>
                     <tr>
                         <td colspan = "2" style = "text-align: center;">
-                            <a href="/" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Regresar</a>
+                            <a href="consulta.php?Id=<?php echo $row['clave'];?>" class="btn btn-danger btn-lg active" role="button" aria-pressed="true">Regresar</a>
                         </td>
                             
                     </tr>

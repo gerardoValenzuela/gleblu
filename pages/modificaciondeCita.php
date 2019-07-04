@@ -148,7 +148,7 @@ or die ("no se puede conectar con el servidor local".mysqli_error($conexion));
           </tr>
           <tr>
             <td colspan = "1" style = "text-align: center">
-              <a href="consulta.php?Id=<?php echo $Id; ?>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Regresar</a>
+              <a href="/gleblu" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Regresar</a>
             </td>
           </tr>
         <?php }else{ ?>
@@ -158,7 +158,7 @@ or die ("no se puede conectar con el servidor local".mysqli_error($conexion));
           </tr>
           <tr>
             <td colspan = "1" style = "text-align: center">
-              <a href="consulta.php?Id=<?php echo $Id; ?>" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Regresar</a>
+              <a href="/gleblu" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" style = "background-color:#0000ff;">Regresar</a>
             </td>
           </tr>
         <?php } ?>
